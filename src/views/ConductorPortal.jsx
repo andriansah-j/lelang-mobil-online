@@ -142,12 +142,12 @@ export const ConductorPortal = () => {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', padding: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', border: '1px solid var(--border-color)', marginBottom: '24px' }}>
                     <div>
                       <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Harga Awal Start:</div>
-                      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>Rp {activeCar.startPrice.toLocaleString()}</div>
+                      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>Rp {Number(activeCar.startPrice || 0).toLocaleString()}</div>
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Tawaran Bid Saat Ini:</div>
                       <div style={{ fontWeight: '800', fontSize: '20px', color: 'var(--success)' }}>
-                        Rp {connectedAuction.currentBid.toLocaleString()}
+                        Rp {Number(connectedAuction.currentBid || 0).toLocaleString()}
                       </div>
                     </div>
                   </div>
@@ -189,7 +189,7 @@ export const ConductorPortal = () => {
                     {connectedAuction.lotStatus === 'SOLD' && (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
                         <div style={{ width: '100%', padding: '16px', background: 'var(--success-glow)', border: '2px solid var(--success)', borderRadius: '8px', color: 'var(--success)', fontWeight: 'bold', textAlign: 'center', fontSize: '16px' }}>
-                          🏆 UNIT TERJUAL KEPADA {connectedAuction.highestBidderName} ({connectedAuction.highestBidderNipl}) seharga Rp {connectedAuction.currentBid.toLocaleString()}
+                          🏆 UNIT TERJUAL KEPADA {connectedAuction.highestBidderName} ({connectedAuction.highestBidderNipl}) seharga Rp {Number(connectedAuction.currentBid || 0).toLocaleString()}
                         </div>
                         <button className="btn-primary" style={{ width: '100%' }} onClick={handleNextLot}>
                           Lanjut ke Lot Berikutnya &raquo;
@@ -228,7 +228,7 @@ export const ConductorPortal = () => {
                   activeCarBids.map((b, idx) => (
                     <div key={b.id} className={`bid-history-item ${idx === 0 ? 'latest' : ''}`}>
                       <div>{b.buyerName} ({b.buyerNipl})</div>
-                      <div>Rp {b.amount.toLocaleString()}</div>
+                      <div>Rp {Number(b.amount || 0).toLocaleString()}</div>
                     </div>
                   ))
                 )}

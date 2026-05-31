@@ -123,22 +123,22 @@ export const SellerPortal = () => {
                       <td style={{ fontWeight: 'bold' }}>{c.plateNo}</td>
                       <td>{c.maker} {c.model} {c.type}</td>
                       <td>{c.color} / {c.year}</td>
-                      <td>{c.odometer.toLocaleString()} km</td>
+                      <td>{Number(c.odometer || 0).toLocaleString()} km</td>
                       <td>
                         <span className={`badge badge-${c.status.toLowerCase().replace('_complete', '')}`}>
                           {c.status}
                         </span>
                       </td>
                       <td>
-                        {c.inspection ? `Rp ${c.inspection.recommendedPrice.toLocaleString()}` : '-'}
+                        {c.inspection ? `Rp ${Number(c.inspection.recommendedPrice).toLocaleString()}` : '-'}
                       </td>
                       <td>
                         {c.status === 'SOLD' ? (
                           <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>
-                            Rp {c.closingPrice?.toLocaleString()}
+                            Rp {Number(c.closingPrice || 0).toLocaleString()}
                           </span>
                         ) : c.startPrice > 0 ? (
-                          `Rp ${c.startPrice.toLocaleString()}`
+                          `Rp ${Number(c.startPrice).toLocaleString()}`
                         ) : (
                           '-'
                         )}
@@ -384,7 +384,7 @@ export const SellerPortal = () => {
                     <div>Score Inspeksi: <span style={{ fontWeight: 'bold' }}>{selectedCar.inspection.score}/100</span></div>
                   </div>
                   <div style={{ marginTop: '12px', fontSize: '15px' }}>
-                    Harga Rekomendasi: <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>Rp {selectedCar.inspection.recommendedPrice.toLocaleString()}</span>
+                    Harga Rekomendasi: <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>Rp {Number(selectedCar.inspection.recommendedPrice).toLocaleString()}</span>
                   </div>
                 </div>
                 

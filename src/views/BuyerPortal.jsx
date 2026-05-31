@@ -475,13 +475,13 @@ export const BuyerPortal = () => {
                       </div>
 
                       <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                        Odometer: <strong>{c.odometer.toLocaleString()} km</strong> | Tahun: <strong>{c.year}</strong>
+                        Odometer: <strong>{Number(c.odometer || 0).toLocaleString()} km</strong> | Tahun: <strong>{c.year}</strong>
                       </div>
 
                       <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
                           <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Mulai Dari:</div>
-                          <div style={{ fontWeight: '800', color: 'var(--success)', fontSize: '15px' }}>Rp {price.toLocaleString()}</div>
+                          <div style={{ fontWeight: '800', color: 'var(--success)', fontSize: '15px' }}>Rp {Number(price || 0).toLocaleString()}</div>
                         </div>
                         <button className="btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => setViewingCar(c)}>
                           Detail Unit
@@ -515,7 +515,7 @@ export const BuyerPortal = () => {
                 <div className="form-group"><label>Model & Tipe</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.model} {viewingCar.type}</div></div>
                 <div className="form-group"><label>Tahun Perakitan</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.year}</div></div>
                 <div className="form-group"><label>Warna Eksterior</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.color}</div></div>
-                <div className="form-group"><label>Odometer</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.odometer.toLocaleString()} km</div></div>
+                <div className="form-group"><label>Odometer</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{Number(viewingCar.odometer || 0).toLocaleString()} km</div></div>
                 <div className="form-group"><label>Bahan Bakar & Transmisi</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.fuel} / {viewingCar.transmission}</div></div>
                 <div className="form-group"><label>Kapasitas Mesin</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.cc} cc</div></div>
                 <div className="form-group"><label>Status Surat STNK</label><div className="form-control" style={{ background: 'rgba(255,255,255,0.02)' }}>{viewingCar.stnk}</div></div>
@@ -615,7 +615,7 @@ export const BuyerPortal = () => {
                         <td style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{t.niplCode}</td>
                         <td>{t.type}</td>
                         <td>{t.va}</td>
-                        <td>Rp {t.amount.toLocaleString()}</td>
+                        <td>Rp {Number(t.amount || 0).toLocaleString()}</td>
                         <td>
                           <span className="badge badge-sold">{t.status}</span>
                         </td>
@@ -655,7 +655,7 @@ export const BuyerPortal = () => {
                   <div>
                     <span style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: 'bold' }}>LOT {activeCar.lot}</span>
                     <h2 style={{ fontSize: '24px' }}>{activeCar.maker} {activeCar.model} {activeCar.type}</h2>
-                    <p>Odometer: {activeCar.odometer.toLocaleString()} km | Transmisi: {activeCar.transmission}</p>
+                    <p>Odometer: {Number(activeCar.odometer || 0).toLocaleString()} km | Transmisi: {activeCar.transmission}</p>
                   </div>
                   <span style={{ fontSize: '20px', fontWeight: 'bold', padding: '4px 12px', background: 'rgba(0,240,255,0.1)', color: 'var(--primary)', borderRadius: '4px' }}>
                     Grade {activeCar.inspection?.grade || 'F'}
@@ -666,12 +666,12 @@ export const BuyerPortal = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', margin: '24px 0', padding: '24px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                   <div>
                     <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Harga Awal Lot:</div>
-                    <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Rp {activeCar.startPrice.toLocaleString()}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Rp {Number(activeCar.startPrice || 0).toLocaleString()}</div>
                   </div>
                   <div>
                     <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Tawaran Tertinggi Saat Ini:</div>
                     <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--success)' }}>
-                      Rp {activeAuction.currentBid.toLocaleString()}
+                      Rp {Number(activeAuction.currentBid || 0).toLocaleString()}
                     </div>
                   </div>
                 </div>
@@ -736,7 +736,7 @@ export const BuyerPortal = () => {
                     activeCarBids.map((b, idx) => (
                       <div key={b.id} className={`bid-history-item ${idx === 0 ? 'latest' : ''}`}>
                         <div>{b.buyerName} ({b.buyerNipl})</div>
-                        <div>Rp {b.amount.toLocaleString()}</div>
+                        <div>Rp {Number(b.amount || 0).toLocaleString()}</div>
                       </div>
                     ))
                   )}
@@ -779,7 +779,7 @@ export const BuyerPortal = () => {
                   <div style={{ fontWeight: 'bold', fontSize: '20px', color: 'var(--primary)', letterSpacing: '1px' }}>{pendingVa.va}</div>
 
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '12px' }}>NOMINAL DEPOSIT:</div>
-                  <div style={{ fontWeight: 'bold', fontSize: '18px', color: 'var(--success)' }}>Rp {pendingVa.amount.toLocaleString()}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '18px', color: 'var(--success)' }}>Rp {Number(pendingVa.amount || 0).toLocaleString()}</div>
                 </div>
 
                 <small style={{ color: 'var(--text-muted)' }}>

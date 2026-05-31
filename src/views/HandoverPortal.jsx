@@ -77,7 +77,7 @@ export const HandoverPortal = () => {
                       <td>{c.maker} {c.model} {c.type}</td>
                       <td>{c.winnerName} ({c.winnerNipl})</td>
                       <td style={{ fontWeight: 'bold', color: 'var(--success)' }}>
-                        Rp {c.closingPrice?.toLocaleString()}
+                        Rp {Number(c.closingPrice || 0).toLocaleString()}
                       </td>
                       <td>
                         <span style={{
@@ -151,7 +151,7 @@ export const HandoverPortal = () => {
                 <tr><td style={{ padding: '6px 0' }}>Uang Jaminan NIPL:</td><td>{printCar.winnerNipl}</td></tr>
                 <tr><td style={{ padding: '6px 0' }}>Mobil / Tipe:</td><td>{printCar.maker} {printCar.model} {printCar.type} ({printCar.year})</td></tr>
                 <tr><td style={{ padding: '6px 0' }}>Nomor Polisi:</td><td><strong>{printCar.plateNo}</strong></td></tr>
-                <tr><td style={{ padding: '6px 0' }}>Harga Terbentuk:</td><td><strong>Rp {printCar.closingPrice?.toLocaleString()}</strong></td></tr>
+                <tr><td style={{ padding: '6px 0' }}>Harga Terbentuk:</td><td><strong>Rp {Number(printCar.closingPrice || 0).toLocaleString()}</strong></td></tr>
                 <tr><td style={{ padding: '6px 0' }}>Status Pembayaran:</td><td>LUNAS (Virtual Account Terverifikasi)</td></tr>
               </tbody>
             </table>

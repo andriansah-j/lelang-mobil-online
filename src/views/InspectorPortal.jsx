@@ -112,7 +112,7 @@ export const InspectorPortal = () => {
                       <td style={{ fontWeight: 'bold' }}>{c.plateNo}</td>
                       <td>{c.maker}</td>
                       <td>{c.model} {c.type}</td>
-                      <td>{c.year} / {c.odometer.toLocaleString()} km</td>
+                      <td>{c.year} / {Number(c.odometer || 0).toLocaleString()} km</td>
                       <td>{c.sellerName}</td>
                       <td>
                         <button className="btn-primary" onClick={() => startInspection(c)}>

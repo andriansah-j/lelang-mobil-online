@@ -600,7 +600,7 @@ export const AdminPortal = () => {
                     <td>{c.maker} {c.model} {c.type}</td>
                     <td>{c.sellerName}</td>
                     <td style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{c.inspection?.grade || 'F'}</td>
-                    <td>Rp {c.inspection?.recommendedPrice.toLocaleString()}</td>
+                    <td>Rp {c.inspection?.recommendedPrice ? Number(c.inspection.recommendedPrice).toLocaleString() : '-'}</td>
                     <td>
                       <span className={`badge badge-${c.status.toLowerCase().replace('_complete', '')}`}>{c.status}</span>
                     </td>

@@ -3,299 +3,142 @@ import { APP_CONFIG } from '../config';
 
 export const AuctionContext = createContext();
 
-// Initial database seed
-const INITIAL_USERS = [
-  { id: 'usr-admin', name: 'Super Admin', email: `admin@${APP_CONFIG.emailDomain}`, phone: '08123456789', role: 'admin', status: 'active', password: 'password' },
-  { id: 'usr-insp1', name: 'Joko Sulistyo', email: `inspector@${APP_CONFIG.emailDomain}`, phone: '08234567890', role: 'inspector admin', status: 'active', password: 'password' },
-  { id: 'usr-cond1', name: 'Ivan Mobil', email: `conductor@${APP_CONFIG.emailDomain}`, phone: '08345678901', role: 'conductor admin', status: 'active', password: 'password' },
-  { id: 'usr-buyer1', name: 'Budi Sukarjan', email: `buyer@${APP_CONFIG.emailDomain}`, phone: '08122334455', role: 'user', type: 'buyer', status: 'active', password: 'password', ktp: '23523535131', balance: 50000000, nipls: ['REG001', 'REG003'] },
-  { id: 'usr-seller1', name: 'Reva Motor', email: `seller@${APP_CONFIG.emailDomain}`, phone: '08133445566', role: 'user', type: 'seller', status: 'active', password: 'password', company: 'PT Reva Motor Utama', address: 'Jl. Meruya No. 18, Jakarta Barat', branch: 'Jakarta', commissionRate: 1 },
-  { id: 'usr-buyer2', name: 'Ahmad Dahlan', email: `ahmad@${APP_CONFIG.emailDomain}`, phone: '08199887766', role: 'user', type: 'buyer', status: 'pending_verification', password: 'password', ktp: '36012344567890', balance: 0, nipls: [] }
-];
-
-const INITIAL_CARS = [
-  {
-    id: 'CAR-001',
-    plateNo: 'B1234AA',
-    maker: 'Toyota',
-    model: 'Avanza',
-    type: '1.3G M/T',
-    color: 'Hitam',
-    year: 2012,
-    cc: 1300,
-    fuel: 'Bensin',
-    transmission: 'M/T',
-    odometer: 120000,
-    sellerId: 'usr-seller1',
-    sellerName: 'Reva Motor',
-    branch: 'Jakarta',
-    status: 'SOLD',
-    statusHistory: ['Pickup', 'Cleaned', 'New', 'Yard', 'Stock', 'Allocated', 'Sold'],
-    inspection: {
-      score: 84,
-      grade: 'B',
-      recommendedPrice: 90000000,
-      defects: [
-        { area: 'Front', defect: 'Gores', level: 'Rendah', scoreImpact: 1 },
-        { area: 'Rear', defect: 'Penyok', level: 'Sedang', scoreImpact: 3 },
-        { area: 'Left 1', defect: 'Gores', level: 'Rendah', scoreImpact: 1 },
-        { area: 'Right 1', defect: 'Karat', level: 'Tinggi', scoreImpact: 8 },
-        { area: 'Right 2', defect: 'Gores', level: 'Rendah', scoreImpact: 1 }
-      ],
-      checks: {
-        kunci: 'Ya', kunciUtama: 'Ya', sumKunci: 2, remot: 'Ya', remoteUtama: 1,
-        bukuManual: 'Ya', bukuServis: 'Ya', banCadangan: 'Ya', dongkrak: 'Ya',
-        tapeMobil: 'Ya', tipeTape: 'Touch Panel + Navi', mesinBekerja: 'Ya',
-        langsamStabil: 'Ya', powerWindow: 'OK', ac: 'OK', warningLamp: 'OK', lampuSein: 'OK'
-      },
-      note: 'Ban serep kempes, power window kanan agak macet.'
-    },
-    requestPrice: 85000000,
-    startPrice: 80000000,
-    closingPrice: 91000000,
-    winnerName: 'Budi Sukarjan',
-    winnerNipl: 'REG001',
-    paymentStatus: 'PAID',
-    auctionId: 'AUC-001',
-    lane: 'A',
-    lot: 1,
-    handoverDate: '2026-05-28',
-    givenBy: 'Joko Sulistyo',
-    receivedBy: 'Budi Sukarjan'
-  },
-  {
-    id: 'CAR-002',
-    plateNo: 'B2345BB',
-    maker: 'Toyota',
-    model: 'Vios',
-    type: 'G A/T',
-    color: 'Silver',
-    year: 2012,
-    cc: 1500,
-    fuel: 'Bensin',
-    transmission: 'A/T',
-    odometer: 85000,
-    sellerId: 'usr-seller1',
-    sellerName: 'Reva Motor',
-    branch: 'Jakarta',
-    status: 'STOCK',
-    statusHistory: ['Pickup', 'Cleaned', 'New', 'Yard', 'Stock'],
-    inspection: {
-      score: 95,
-      grade: 'A',
-      recommendedPrice: 75000000,
-      defects: [],
-      checks: {
-        kunci: 'Ya', kunciUtama: 'Ya', sumKunci: 2, remot: 'Ya', remoteUtama: 2,
-        bukuManual: 'Ya', bukuServis: 'Ya', banCadangan: 'Ya', dongkrak: 'Ya',
-        tapeMobil: 'Ya', tipeTape: 'Analog', mesinBekerja: 'Ya',
-        langsamStabil: 'Ya', powerWindow: 'OK', ac: 'OK', warningLamp: 'OK', lampuSein: 'OK'
-      },
-      note: 'Kondisi mulus sekali.'
-    },
-    requestPrice: 70000000,
-    startPrice: 75000000,
-    paymentStatus: 'UNPAID',
-    auctionId: '',
-    lane: '',
-    lot: 0
-  },
-  {
-    id: 'CAR-003',
-    plateNo: 'B2467TZL',
-    maker: 'Toyota',
-    model: 'Calya',
-    type: '1.2 G A/T',
-    color: 'Hitam',
-    year: 2014,
-    cc: 1197,
-    fuel: 'Bensin',
-    transmission: 'A/T',
-    odometer: 21487,
-    sellerId: 'usr-seller1',
-    sellerName: 'Reva Motor',
-    branch: 'Jakarta',
-    status: 'ALLOCATED',
-    statusHistory: ['Pickup', 'Cleaned', 'New', 'Yard', 'Stock', 'Allocated'],
-    inspection: {
-      score: 87,
-      grade: 'B',
-      recommendedPrice: 120000000,
-      defects: [
-        { area: 'Front', defect: 'Gores', level: 'Rendah', scoreImpact: 1 },
-        { area: 'Rear', defect: 'Penyok', level: 'Rendah', scoreImpact: 2 },
-        { area: 'Left 1', defect: 'Gores', level: 'Rendah', scoreImpact: 1 },
-        { area: 'Right 1', defect: 'Karat', level: 'Tinggi', scoreImpact: 8 },
-        { area: 'Right 2', defect: 'Gores', level: 'Rendah', scoreImpact: 1 }
-      ],
-      checks: {
-        kunci: 'Ya', kunciUtama: 'Ya', sumKunci: 2, remot: 'Ya', remoteUtama: 1,
-        bukuManual: 'Ya', bukuServis: 'Ya', banCadangan: 'Ya', dongkrak: 'Ya',
-        tapeMobil: 'Ya', tipeTape: 'Touch Panel + Navi', mesinBekerja: 'Ya',
-        langsamStabil: 'Ya', powerWindow: 'OK', ac: 'OK', warningLamp: 'OK', lampuSein: 'OK'
-      },
-      note: 'Ban serep bocor, power window kiri belakang seret.'
-    },
-    requestPrice: 118000000,
-    startPrice: 120000000,
-    paymentStatus: 'UNPAID',
-    auctionId: 'AUC-001',
-    lane: 'A',
-    lot: 2
-  },
-  {
-    id: 'CAR-004',
-    plateNo: 'B3456CC',
-    maker: 'Honda',
-    model: 'City',
-    type: '1.5 i-VTEC',
-    color: 'Putih',
-    year: 2014,
-    cc: 1500,
-    fuel: 'Bensin',
-    transmission: 'A/T',
-    odometer: 60000,
-    sellerId: 'usr-seller1',
-    sellerName: 'Reva Motor',
-    branch: 'Jakarta',
-    status: 'ALLOCATED',
-    statusHistory: ['Pickup', 'Cleaned', 'New', 'Yard', 'Stock', 'Allocated'],
-    inspection: {
-      score: 92,
-      grade: 'A',
-      recommendedPrice: 150000000,
-      defects: [
-        { area: 'Left 1', defect: 'Gores', level: 'Rendah', scoreImpact: 1 },
-        { area: 'Right 1', defect: 'Gores', level: 'Rendah', scoreImpact: 1 }
-      ],
-      checks: {
-        kunci: 'Ya', kunciUtama: 'Ya', sumKunci: 2, remot: 'Ya', remoteUtama: 2,
-        bukuManual: 'Ya', bukuServis: 'Ya', banCadangan: 'Ya', dongkrak: 'Ya',
-        tapeMobil: 'Ya', tipeTape: 'Touch Panel + Navi', mesinBekerja: 'Ya',
-        langsamStabil: 'Ya', powerWindow: 'OK', ac: 'OK', warningLamp: 'OK', lampuSein: 'OK'
-      },
-      note: 'Mesin sangat halus.'
-    },
-    requestPrice: 148000000,
-    startPrice: 150000000,
-    paymentStatus: 'UNPAID',
-    auctionId: 'AUC-001',
-    lane: 'A',
-    lot: 3
-  },
-  {
-    id: 'CAR-005',
-    plateNo: 'B9999XYZ',
-    maker: 'Honda',
-    model: 'Brio',
-    type: '1.2 E',
-    color: 'Merah',
-    year: 2017,
-    cc: 1200,
-    fuel: 'Bensin',
-    transmission: 'A/T',
-    odometer: 45000,
-    sellerId: 'usr-seller1',
-    sellerName: 'Reva Motor',
-    branch: 'Jakarta',
-    status: 'NEW',
-    statusHistory: ['Pickup', 'Cleaned', 'New'],
-    inspection: null,
-    requestPrice: 0,
-    startPrice: 0,
-    paymentStatus: 'UNPAID',
-    auctionId: '',
-    lane: '',
-    lot: 0
-  }
-];
-
-const INITIAL_AUCTIONS = [
-  {
-    id: 'AUC-001',
-    name: 'Jakarta-Car-00026-29/05/2026',
-    branch: 'Jakarta',
-    date: '2026-05-29',
-    startTime: '09:00',
-    endTime: '12:00',
-    type: 'By highest bid',
-    productType: 'Mobil',
-    auctioneer: 'Ivan Mobil',
-    status: 'Active', // Active, Scheduled, Finished
-    currentLotIndex: 1, // index of currently active car in this auction
-    currentBid: 120000000,
-    highestBidderNipl: '',
-    highestBidderName: '',
-    countdown: 10,
-    lotStatus: 'CLOSED' // CLOSED, BIDDING, COUNTDOWN, SOLD, UNSOLD
-  },
-  {
-    id: 'AUC-002',
-    name: 'Bandung-Car-00017-30/05/2026',
-    branch: 'Bandung',
-    date: '2026-05-30',
-    startTime: '10:00',
-    endTime: '13:00',
-    type: 'By highest bid',
-    productType: 'Mobil',
-    auctioneer: 'Ivan Mobil',
-    status: 'Scheduled',
-    currentLotIndex: 0,
-    currentBid: 0,
-    highestBidderNipl: '',
-    highestBidderName: '',
-    countdown: 0,
-    lotStatus: 'CLOSED'
-  }
-];
-
 export const AuctionProvider = ({ children }) => {
-  const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('lelangonline_users');
-    return saved ? JSON.parse(saved) : INITIAL_USERS;
-  });
+  const API_URL = `http://${window.location.hostname}:5000/api`;
+  const WS_URL = `ws://${window.location.hostname}:5000`;
 
-  const [cars, setCars] = useState(() => {
-    const saved = localStorage.getItem('lelangonline_cars');
-    return saved ? JSON.parse(saved) : INITIAL_CARS;
-  });
-
-  const [auctions, setAuctions] = useState(() => {
-    const saved = localStorage.getItem('lelangonline_auctions');
-    return saved ? JSON.parse(saved) : INITIAL_AUCTIONS;
-  });
+  const [users, setUsers] = useState([]);
+  const [cars, setCars] = useState([]);
+  const [auctions, setAuctions] = useState([]);
+  const [bids, setBids] = useState([]);
+  const [niplTransactions, setNiplTransactions] = useState([]);
 
   const [activeUser, setActiveUser] = useState(() => {
     const saved = localStorage.getItem('lelangonline_active_user');
-    return saved ? JSON.parse(saved) : null; // Default to null (guest / not logged in)
+    return saved ? JSON.parse(saved) : null;
   });
 
-  const [bids, setBids] = useState(() => {
-    const saved = localStorage.getItem('lelangonline_bids');
-    return saved ? JSON.parse(saved) : [];
-  });
+  // 1. FETCH INITIAL DATA FROM API ON LOAD
+  const refreshData = async () => {
+    try {
+      const usersRes = await fetch(`${API_URL}/users`);
+      if (usersRes.ok) setUsers(await usersRes.json());
 
-  const [niplTransactions, setNiplTransactions] = useState(() => {
-    const saved = localStorage.getItem('lelangonline_nipls');
-    return saved ? JSON.parse(saved) : [
-      { id: 'NIPL-001', buyerId: 'usr-buyer1', type: 'Regular', amount: 5000000, niplCode: 'REG001', status: 'PAID', va: '236623463246', date: '2026-05-28' },
-      { id: 'NIPL-002', buyerId: 'usr-buyer1', type: 'Regular', amount: 5000000, niplCode: 'REG003', status: 'PAID', va: '236623463247', date: '2026-05-28' }
-    ];
-  });
+      const carsRes = await fetch(`${API_URL}/cars`);
+      if (carsRes.ok) setCars(await carsRes.json());
 
-  // Sync to localStorage
+      const auctionsRes = await fetch(`${API_URL}/auctions`);
+      if (auctionsRes.ok) setAuctions(await auctionsRes.json());
+
+      const bidsRes = await fetch(`${API_URL}/bids`);
+      if (bidsRes.ok) setBids(await bidsRes.json());
+
+      const niplRes = await fetch(`${API_URL}/nipl-transactions`);
+      if (niplRes.ok) setNiplTransactions(await niplRes.json());
+    } catch (err) {
+      console.error('⚠️ Gagal terhubung ke API backend:', err.message);
+    }
+  };
+
   useEffect(() => {
-    localStorage.setItem('lelangonline_users', JSON.stringify(users));
-  }, [users]);
+    refreshData();
+  }, []);
 
+  // 2. CONNECT TO WEBSOCKET FEED FOR REAL-TIME EVENTS
   useEffect(() => {
-    localStorage.setItem('lelangonline_cars', JSON.stringify(cars));
-  }, [cars]);
+    let ws;
+    let reconnectTimeout;
 
-  useEffect(() => {
-    localStorage.setItem('lelangonline_auctions', JSON.stringify(auctions));
-  }, [auctions]);
+    const connectWebSocket = () => {
+      console.log(`🔌 Menghubungkan WebSocket ke ${WS_URL}...`);
+      ws = new WebSocket(WS_URL);
 
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          switch (data.type) {
+            case 'WELCOME':
+              console.log('📡 Feed WebSocket:', data.message);
+              break;
+
+            case 'COUNTDOWN_TICK':
+              setAuctions(prev => prev.map(auc => 
+                auc.id === data.auctionId 
+                  ? { ...auc, countdown: data.countdown } 
+                  : auc
+              ));
+              break;
+
+            case 'NEW_BID_PLACED':
+              // Update auction state with new high bid
+              setAuctions(prev => prev.map(auc => 
+                auc.id === data.auction.id ? data.auction : auc
+              ));
+              // Append to list of live bids
+              setBids(prev => {
+                if (prev.some(b => b.id === data.bid.id)) return prev;
+                return [data.bid, ...prev];
+              });
+              break;
+
+            case 'LOT_FINALIZED':
+              console.log('⏱️ Lot selesai:', data.auction.lot_status);
+              // Sync updated auction state
+              setAuctions(prev => prev.map(auc => 
+                auc.id === data.auction.id ? data.auction : auc
+              ));
+              // Sync updated car state
+              if (data.car) {
+                setCars(prev => prev.map(c => 
+                  c.id === data.car.id ? { ...c, ...data.car } : c
+                ));
+              }
+              break;
+
+            case 'AUCTION_STATE_UPDATED':
+              setAuctions(prev => prev.map(auc => 
+                auc.id === data.auction.id ? data.auction : auc
+              ));
+              // Trigger refresh to update cars (status histories, etc.)
+              refreshData();
+              break;
+
+            case 'AUCTION_NEXT_LOT':
+              setAuctions(prev => prev.map(auc => 
+                auc.id === data.auction.id ? data.auction : auc
+              ));
+              refreshData();
+              break;
+
+            default:
+              break;
+          }
+        } catch (err) {
+          console.error('Error parsing WebSocket message:', err);
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('🔌 WebSocket terputus. Mencoba menghubungkan kembali dalam 3 detik...');
+        reconnectTimeout = setTimeout(connectWebSocket, 3000);
+      };
+
+      ws.onerror = (err) => {
+        console.error('WebSocket Error:', err);
+        ws.close();
+      };
+    };
+
+    connectWebSocket();
+
+    return () => {
+      if (ws) ws.close();
+      clearTimeout(reconnectTimeout);
+    };
+  }, []);
+
+  // 3. PERSIST ACTIVE USER SESSION LOCALLY
   useEffect(() => {
     if (activeUser) {
       localStorage.setItem('lelangonline_active_user', JSON.stringify(activeUser));
@@ -304,16 +147,8 @@ export const AuctionProvider = ({ children }) => {
     }
   }, [activeUser]);
 
-  useEffect(() => {
-    localStorage.setItem('lelangonline_bids', JSON.stringify(bids));
-  }, [bids]);
-
-  useEffect(() => {
-    localStorage.setItem('lelangonline_nipls', JSON.stringify(niplTransactions));
-  }, [niplTransactions]);
-
-  // -- LOGOUT & LOGIN --
-  const switchUser = (userId) => {
+  // -- AUTHENTICATION --
+  const switchUser = async (userId) => {
     const user = users.find(u => u.id === userId);
     if (user) {
       setActiveUser(user);
@@ -325,73 +160,100 @@ export const AuctionProvider = ({ children }) => {
   };
 
   // -- USER MANAGEMENT (CRUD & REGISTER APPROVAL) --
-  const addUser = (userData) => {
-    const newUser = {
-      id: `usr-${Date.now()}`,
-      status: 'active',
-      nipls: [],
-      balance: 0,
-      ...userData
-    };
-    setUsers(prev => [...prev, newUser]);
-    return newUser;
-  };
-
-  const updateUser = (userId, updatedData) => {
-    setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...updatedData } : u));
-    // Update activeUser if same
-    if (activeUser.id === userId) {
-      setActiveUser(prev => ({ ...prev, ...updatedData }));
+  const addUser = async (userData) => {
+    try {
+      const res = await fetch(`${API_URL}/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      if (!res.ok) throw new Error('Gagal membuat user baru');
+      const data = await res.json();
+      setUsers(prev => [data, ...prev]);
+      return data;
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const deleteUser = (userId) => {
-    setUsers(prev => prev.filter(u => u.id !== userId));
+  const updateUser = async (userId, updatedData) => {
+    try {
+      const res = await fetch(`${API_URL}/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+      if (!res.ok) throw new Error('Gagal memperbarui user');
+      const data = await res.json();
+      setUsers(prev => prev.map(u => u.id === userId ? data : u));
+      if (activeUser && activeUser.id === userId) {
+        setActiveUser(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const verifyBuyer = (userId, approve) => {
-    setUsers(prev => prev.map(u => {
-      if (u.id === userId) {
-        return { ...u, status: approve ? 'active' : 'rejected' };
-      }
-      return u;
-    }));
+  const deleteUser = async (userId) => {
+    try {
+      const res = await fetch(`${API_URL}/users/${userId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Gagal menghapus user');
+      setUsers(prev => prev.filter(u => u.id !== userId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const verifyBuyer = async (userId, approve) => {
+    try {
+      const res = await fetch(`${API_URL}/users/${userId}/verify`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approve })
+      });
+      if (!res.ok) throw new Error('Gagal verifikasi buyer');
+      const data = await res.json();
+      setUsers(prev => prev.map(u => u.id === userId ? data : u));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- SELLER PORTAL FLOWS --
-  const addCarRequest = (carData, sellerId) => {
-    const seller = users.find(u => u.id === sellerId);
-    const newCar = {
-      id: `CAR-${Date.now()}`,
-      status: 'NEW',
-      statusHistory: ['Pickup', 'Cleaned', 'New'],
-      sellerId: sellerId,
-      sellerName: seller ? seller.name : 'Unknown Seller',
-      inspection: null,
-      requestPrice: 0,
-      startPrice: 0,
-      paymentStatus: 'UNPAID',
-      auctionId: '',
-      lane: '',
-      lot: 0,
-      ...carData
-    };
-    setCars(prev => [...prev, newCar]);
+  const addCarRequest = async (carData, sellerId) => {
+    try {
+      const seller = users.find(u => u.id === sellerId);
+      const body = {
+        ...carData,
+        sellerId,
+        sellerName: seller ? seller.name : 'Unknown Seller'
+      };
+      const res = await fetch(`${API_URL}/cars`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal mengajukan pickup');
+      const data = await res.json();
+      setCars(prev => [data, ...prev]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const confirmRecommendationPrice = (carId, requestPrice) => {
-    setCars(prev => prev.map(c => {
-      if (c.id === carId) {
-        return {
-          ...c,
-          status: 'STOCK',
-          statusHistory: [...c.statusHistory, 'Stock'],
-          requestPrice: parseFloat(requestPrice),
-          startPrice: parseFloat(requestPrice) // Default starting price
-        };
-      }
-      return c;
-    }));
+  const confirmRecommendationPrice = async (carId, requestPrice) => {
+    try {
+      const res = await fetch(`${API_URL}/cars/${carId}/confirm-price`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestPrice })
+      });
+      if (!res.ok) throw new Error('Gagal menyetujui harga');
+      const data = await res.json();
+      setCars(prev => prev.map(c => c.id === carId ? { ...c, ...data } : c));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- INSPECTOR PORTAL FLOWS --
@@ -442,237 +304,299 @@ export const AuctionProvider = ({ children }) => {
     };
   };
 
-  const submitInspection = (carId, defects, checks, isSalvage, basePrice, note) => {
-    const { score, grade, recommendedPrice } = calculateGradeAndPrice(defects, checks, isSalvage, basePrice);
-    
-    setCars(prev => prev.map(c => {
-      if (c.id === carId) {
-        return {
-          ...c,
-          status: 'YARD',
-          statusHistory: [...c.statusHistory, 'Yard'],
-          inspection: { score, grade, recommendedPrice, defects, checks, note, isSalvage }
-        };
-      }
-      return c;
-    }));
+  const submitInspection = async (carId, defects, checks, isSalvage, basePrice, note) => {
+    try {
+      const { score, grade, recommendedPrice } = calculateGradeAndPrice(defects, checks, isSalvage, basePrice);
+      const res = await fetch(`${API_URL}/inspections`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ carId, score, grade, recommendedPrice, defects, checks, note, isSalvage })
+      });
+      if (!res.ok) throw new Error('Gagal menyerahkan inspeksi');
+      
+      // Refresh cars list to retrieve nested inspections
+      const carsRes = await fetch(`${API_URL}/cars`);
+      if (carsRes.ok) setCars(await carsRes.json());
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- ADMIN PORTAL FLOWS --
-  const createAuction = (auctionData) => {
-    const newAuction = {
-      id: `AUC-${Date.now()}`,
-      status: 'Scheduled',
-      currentLotIndex: 0,
-      currentBid: 0,
-      highestBidderNipl: '',
-      highestBidderName: '',
-      countdown: 0,
-      lotStatus: 'CLOSED',
-      ...auctionData
-    };
-    setAuctions(prev => [...prev, newAuction]);
+  const createAuction = async (auctionData) => {
+    try {
+      const res = await fetch(`${API_URL}/auctions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(auctionData)
+      });
+      if (!res.ok) throw new Error('Gagal menjadwalkan lelang');
+      const data = await res.json();
+      setAuctions(prev => [data, ...prev]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const assignCarToAuction = (carId, auctionId, startPrice, lane, lot) => {
-    setCars(prev => prev.map(c => {
-      if (c.id === carId) {
-        return {
-          ...c,
-          status: 'ALLOCATED',
-          statusHistory: [...c.statusHistory, 'Allocated'],
-          auctionId,
-          startPrice: parseFloat(startPrice),
-          lane,
-          lot: parseInt(lot)
-        };
-      }
-      return c;
-    }));
+  const assignCarToAuction = async (carId, auctionId, startPrice, lane, lot) => {
+    try {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+      const history = [...(car.status_history || []), 'Allocated'];
+      const body = {
+        ...car,
+        status: 'ALLOCATED',
+        statusHistory: history,
+        auctionId,
+        startPrice: parseFloat(startPrice),
+        lane,
+        lot: parseInt(lot)
+      };
+      
+      const res = await fetch(`${API_URL}/cars/${carId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal alokasi lot mobil');
+      
+      const carsRes = await fetch(`${API_URL}/cars`);
+      if (carsRes.ok) setCars(await carsRes.json());
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deallocateCar = (carId) => {
-    setCars(prev => prev.map(c => {
-      if (c.id === carId) {
-        return {
-          ...c,
-          status: 'STOCK',
-          auctionId: '',
-          lane: '',
-          lot: 0
-        };
-      }
-      return c;
-    }));
+  const deallocateCar = async (carId) => {
+    try {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+      const body = {
+        ...car,
+        status: 'STOCK',
+        auctionId: '',
+        lane: '',
+        lot: 0
+      };
+      
+      const res = await fetch(`${API_URL}/cars/${carId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal dealokasi mobil');
+      
+      const carsRes = await fetch(`${API_URL}/cars`);
+      if (carsRes.ok) setCars(await carsRes.json());
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- BUYER PORTAL FLOWS --
-  const purchaseNIPL = (buyerId, type) => {
-    const amount = type === 'Premium' ? 25000000 : 10000000;
-    const isPremium = type === 'Premium';
-    const randomNIPL = (isPremium ? 'PRE' : 'REG') + String(Math.floor(100 + Math.random() * 900));
-    
-    const newTransaction = {
-      id: `NIPL-${Date.now()}`,
-      buyerId,
-      type,
-      amount,
-      niplCode: randomNIPL,
-      status: 'PAID', // VA Mock payment instantly sets to PAID
-      va: String(236600000000 + Math.floor(Math.random() * 999999)),
-      date: new Date().toISOString().split('T')[0]
-    };
+  const purchaseNIPL = async (buyerId, type) => {
+    try {
+      const res = await fetch(`${API_URL}/nipl-transactions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ buyerId, type })
+      });
+      if (!res.ok) throw new Error('Gagal membeli NIPL');
+      const data = await res.json();
+      setNiplTransactions(prev => [data, ...prev]);
 
-    setNiplTransactions(prev => [...prev, newTransaction]);
-    setUsers(prev => prev.map(u => {
-      if (u.id === buyerId) {
-        return {
-          ...u,
-          nipls: [...(u.nipls || []), randomNIPL]
-        };
+      // Sync user info to get the updated NIPL array
+      const usersRes = await fetch(`${API_URL}/users`);
+      if (usersRes.ok) {
+        const usersData = await usersRes.json();
+        setUsers(usersData);
+        // Also update local activeUser
+        const selfUser = usersData.find(u => u.id === buyerId);
+        if (selfUser) setActiveUser(selfUser);
       }
-      return u;
-    }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- LIVE BIDDING & CONDUCTOR BOARD --
-  const placeBid = (auctionId, carId, buyerNipl, buyerName, amount) => {
-    const newBidLog = {
-      id: `BID-${Date.now()}`,
-      auctionId,
-      carId,
-      buyerNipl,
-      buyerName,
-      amount: parseFloat(amount),
-      time: new Date().toLocaleTimeString('id-ID')
-    };
+  const placeBid = async (auctionId, carId, buyerNipl, buyerName, amount) => {
+    try {
+      const res = await fetch(`${API_URL}/bids`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ auctionId, carId, buyerNipl, buyerName, amount })
+      });
+      if (!res.ok) throw new Error('Gagal mengirim penawaran bid');
+      const data = await res.json();
 
-    setBids(prev => [...prev, newBidLog]);
-
-    setAuctions(prev => prev.map(auc => {
-      if (auc.id === auctionId) {
-        return {
-          ...auc,
-          currentBid: parseFloat(amount),
-          highestBidderNipl: buyerNipl,
-          highestBidderName: buyerName,
-          countdown: 10 // Reset countdown on new bid
-        };
-      }
-      return auc;
-    }));
+      setBids(prev => {
+        if (prev.some(b => b.id === data.id)) return prev;
+        return [data, ...prev];
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const updateConductorState = (auctionId, lotStatus, extra = {}) => {
-    setAuctions(prev => prev.map(auc => {
-      if (auc.id === auctionId) {
-        let updated = { ...auc, lotStatus, ...extra };
-        
-        // If sold/unsold, we finalize the car
-        if (lotStatus === 'SOLD' || lotStatus === 'UNSOLD') {
-          const carsInAuction = cars.filter(c => c.auctionId === auctionId).sort((a, b) => a.lot - b.lot);
-          const activeCar = carsInAuction[auc.currentLotIndex];
-          if (activeCar) {
-            setCars(prevCars => prevCars.map(c => {
-              if (c.id === activeCar.id) {
-                return {
-                  ...c,
-                  status: lotStatus,
-                  statusHistory: [...c.statusHistory, lotStatus],
-                  closingPrice: lotStatus === 'SOLD' ? auc.currentBid : 0,
-                  winnerNipl: lotStatus === 'SOLD' ? auc.highestBidderNipl : '',
-                  winnerName: lotStatus === 'SOLD' ? auc.highestBidderName : '',
-                  paymentStatus: 'UNPAID'
-                };
-              }
-              return c;
-            }));
-          }
-        }
-        return updated;
+  const updateConductorState = async (auctionId, lotStatus, extra = {}) => {
+    try {
+      const auction = auctions.find(a => a.id === auctionId);
+      if (!auction) return;
+      const body = {
+        ...auction,
+        lotStatus,
+        ...extra
+      };
+      
+      const res = await fetch(`${API_URL}/auctions/${auctionId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal memperbarui status lot conductor');
+      
+      const data = await res.json();
+      setAuctions(prev => prev.map(a => a.id === auctionId ? data : a));
+
+      // Refresh cars list to pull updated status histories on SOLD / UNSOLD
+      if (lotStatus === 'SOLD' || lotStatus === 'UNSOLD') {
+        const carsRes = await fetch(`${API_URL}/cars`);
+        if (carsRes.ok) setCars(await carsRes.json());
       }
-      return auc;
-    }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const nextLot = (auctionId) => {
-    setAuctions(prev => prev.map(auc => {
-      if (auc.id === auctionId) {
-        const carsInAuction = cars.filter(c => c.auctionId === auctionId);
-        const nextIndex = auc.currentLotIndex + 1;
-        
-        // Reset bidding values for next car
-        const nextCar = carsInAuction.sort((a, b) => a.lot - b.lot)[nextIndex];
-        const nextStartPrice = nextCar ? nextCar.startPrice : 0;
-
-        return {
-          ...auc,
-          currentLotIndex: nextIndex < carsInAuction.length ? nextIndex : auc.currentLotIndex,
-          currentBid: nextStartPrice,
-          highestBidderNipl: '',
-          highestBidderName: '',
-          countdown: 0,
-          lotStatus: nextIndex < carsInAuction.length ? 'CLOSED' : 'FINISHED',
-          status: nextIndex < carsInAuction.length ? 'Active' : 'Finished'
-        };
-      }
-      return auc;
-    }));
+  const nextLot = async (auctionId) => {
+    try {
+      const res = await fetch(`${API_URL}/auctions/${auctionId}/next-lot`, {
+        method: 'POST'
+      });
+      if (!res.ok) throw new Error('Gagal melompat ke Lot berikutnya');
+      const data = await res.json();
+      setAuctions(prev => prev.map(a => a.id === auctionId ? data : a));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // -- POST AUCTION HANDOVER & BILLING --
-  const updatePaymentStatus = (carId, status) => {
-    setCars(prev => prev.map(c => c.id === carId ? { ...c, paymentStatus: status } : c));
+  const updatePaymentStatus = async (carId, status) => {
+    try {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+      const body = { ...car, paymentStatus: status };
+      
+      const res = await fetch(`${API_URL}/cars/${carId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal memperbarui status pembayaran');
+      const data = await res.json();
+      
+      setCars(prev => prev.map(c => c.id === carId ? { ...c, ...data } : c));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const submitHandover = (carId, givenBy, receivedBy) => {
-    setCars(prev => prev.map(c => {
-      if (c.id === carId) {
-        return {
-          ...c,
-          status: 'HANDEOVER_COMPLETE',
-          statusHistory: [...c.statusHistory, 'Handover'],
-          givenBy,
-          receivedBy,
-          handoverDate: new Date().toISOString().split('T')[0]
-        };
-      }
-      return c;
-    }));
+  const submitHandover = async (carId, givenBy, receivedBy) => {
+    try {
+      const car = cars.find(c => c.id === carId);
+      if (!car) return;
+      const history = [...(car.status_history || []), 'Handover'];
+      const body = {
+        ...car,
+        status: 'HANDEOVER_COMPLETE',
+        statusHistory: history,
+        givenBy,
+        receivedBy,
+        handoverDate: new Date().toISOString().split('T')[0]
+      };
+      
+      const res = await fetch(`${API_URL}/cars/${carId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('Gagal menyimpan berita acara serah terima');
+      const data = await res.json();
+      
+      setCars(prev => prev.map(c => c.id === carId ? { ...c, ...data } : c));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const addCarDirect = (carData) => {
-    const newCar = {
-      id: `CAR-${Date.now()}`,
-      status: 'NEW',
-      statusHistory: ['New'],
-      requestPrice: 0,
-      startPrice: 0,
-      paymentStatus: 'UNPAID',
-      auctionId: '',
-      lane: '',
-      lot: 0,
-      inspection: null,
-      ...carData
-    };
-    setCars(prev => [...prev, newCar]);
-    return newCar;
+  // Direct actions for admin crud
+  const addCarDirect = async (carData) => {
+    try {
+      const res = await fetch(`${API_URL}/cars`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(carData)
+      });
+      if (!res.ok) throw new Error('Gagal menyimpan data awal mobil');
+      const data = await res.json();
+      setCars(prev => [data, ...prev]);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const updateCar = (carId, updatedData) => {
-    setCars(prev => prev.map(c => c.id === carId ? { ...c, ...updatedData } : c));
+  const updateCar = async (carId, updatedData) => {
+    try {
+      const res = await fetch(`${API_URL}/cars/${carId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+      if (!res.ok) throw new Error('Gagal memperbarui data mobil');
+      
+      const carsRes = await fetch(`${API_URL}/cars`);
+      if (carsRes.ok) setCars(await carsRes.json());
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deleteCar = (carId) => {
-    setCars(prev => prev.filter(c => c.id !== carId));
+  const deleteCar = async (carId) => {
+    try {
+      const res = await fetch(`${API_URL}/cars/${carId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Gagal menghapus data mobil');
+      setCars(prev => prev.filter(c => c.id !== carId));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const updateAuction = (auctionId, updatedData) => {
-    setAuctions(prev => prev.map(a => a.id === auctionId ? { ...a, ...updatedData } : a));
+  const updateAuction = async (auctionId, updatedData) => {
+    try {
+      const res = await fetch(`${API_URL}/auctions/${auctionId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+      if (!res.ok) throw new Error('Gagal memperbarui lelang');
+      const data = await res.json();
+      setAuctions(prev => prev.map(a => a.id === auctionId ? data : a));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deleteAuction = (auctionId) => {
-    setAuctions(prev => prev.filter(a => a.id !== auctionId));
+  const deleteAuction = async (auctionId) => {
+    try {
+      const res = await fetch(`${API_URL}/auctions/${auctionId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Gagal menghapus lelang');
+      setAuctions(prev => prev.filter(a => a.id !== auctionId));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

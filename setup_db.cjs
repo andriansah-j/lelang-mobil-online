@@ -10,7 +10,7 @@ try {
   console.log('Untuk menjalankan script ini, Anda perlu menginstal modul PostgreSQL untuk Node.js.');
   console.log('Silakan jalankan perintah berikut di terminal Anda:\n');
   console.log('   npm install pg\n');
-  console.log('Setelah itu, jalankan kembali script ini: node setup_db.js\n');
+  console.log('Setelah itu, jalankan kembali script ini: node setup_db.cjs\n');
   process.exit(1);
 }
 
